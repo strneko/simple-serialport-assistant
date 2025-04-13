@@ -1,0 +1,10 @@
+D:\c#\simple-port\simple-port\simple-port\bin\Debug\simple-port.exe.config
+D:\c#\simple-port\simple-port\simple-port\bin\Debug\simple-port.exe
+D:\c#\simple-port\simple-port\simple-port\bin\Debug\simple-port.pdb
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple-port.csproj.AssemblyReference.cache
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple_port.Properties.Resources.resources
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple-port.csproj.GenerateResource.cache
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple-port.csproj.CoreCompileInputs.cache
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple-port.exe
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple-port.pdb
+D:\c#\simple-port\simple-port\simple-port\obj\Debug\simple_port.Main.resources
