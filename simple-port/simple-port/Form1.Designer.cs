@@ -61,19 +61,18 @@
             this.HexSend = new System.Windows.Forms.CheckBox();
             this.autoSend = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.port = new System.Windows.Forms.GroupBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel3 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel4 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.sendCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel6 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.receiveCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.port.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -86,7 +85,6 @@
             this.portSelect.Name = "portSelect";
             this.portSelect.Size = new System.Drawing.Size(274, 32);
             this.portSelect.TabIndex = 0;
-            this.portSelect.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // receiveRtb
             // 
@@ -95,7 +93,6 @@
             this.receiveRtb.Size = new System.Drawing.Size(720, 637);
             this.receiveRtb.TabIndex = 2;
             this.receiveRtb.Text = "";
-            this.receiveRtb.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // label1
             // 
@@ -105,7 +102,6 @@
             this.label1.Size = new System.Drawing.Size(58, 24);
             this.label1.TabIndex = 3;
             this.label1.Text = "发送";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
@@ -115,7 +111,6 @@
             this.label2.Size = new System.Drawing.Size(58, 24);
             this.label2.TabIndex = 4;
             this.label2.Text = "接收";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // sendRtb
             // 
@@ -125,7 +120,6 @@
             this.sendRtb.Size = new System.Drawing.Size(720, 342);
             this.sendRtb.TabIndex = 6;
             this.sendRtb.Text = "";
-            this.sendRtb.TextChanged += new System.EventHandler(this.send_rtb_TextChanged);
             // 
             // BaudSelect
             // 
@@ -148,7 +142,6 @@
             this.label3.Size = new System.Drawing.Size(82, 24);
             this.label3.TabIndex = 8;
             this.label3.Text = "端口号";
-            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // label5
             // 
@@ -274,6 +267,7 @@
             this.autoClearReceive.TabIndex = 21;
             this.autoClearReceive.Text = "自动清空";
             this.autoClearReceive.UseVisualStyleBackColor = true;
+            this.autoClearReceive.CheckedChanged += new System.EventHandler(this.autoClearReceive_CheckedChanged);
             // 
             // HexReceive
             // 
@@ -284,6 +278,7 @@
             this.HexReceive.TabIndex = 22;
             this.HexReceive.Text = "十六进制";
             this.HexReceive.UseVisualStyleBackColor = true;
+            this.HexReceive.CheckedChanged += new System.EventHandler(this.HexReceive_CheckedChanged);
             // 
             // clearReceive
             // 
@@ -294,7 +289,7 @@
             this.clearReceive.TabIndex = 23;
             this.clearReceive.Text = "手动清空";
             this.clearReceive.UseVisualStyleBackColor = true;
-            this.clearReceive.Click += new System.EventHandler(this.button2_Click);
+            this.clearReceive.Click += new System.EventHandler(this.clearReceive_Click);
             // 
             // pauseReceive
             // 
@@ -305,6 +300,7 @@
             this.pauseReceive.TabIndex = 24;
             this.pauseReceive.Text = "暂停";
             this.pauseReceive.UseVisualStyleBackColor = true;
+            this.pauseReceive.Click += new System.EventHandler(this.pauseReceive_Click);
             // 
             // selectPath
             // 
@@ -338,7 +334,7 @@
             // sendDocument
             // 
             this.sendDocument.Font = new System.Drawing.Font("宋体", 9F);
-            this.sendDocument.Location = new System.Drawing.Point(236, 899);
+            this.sendDocument.Location = new System.Drawing.Point(232, 888);
             this.sendDocument.Name = "sendDocument";
             this.sendDocument.Size = new System.Drawing.Size(174, 46);
             this.sendDocument.TabIndex = 33;
@@ -348,7 +344,7 @@
             // openDocument
             // 
             this.openDocument.Font = new System.Drawing.Font("宋体", 9F);
-            this.openDocument.Location = new System.Drawing.Point(35, 899);
+            this.openDocument.Location = new System.Drawing.Point(31, 888);
             this.openDocument.Name = "openDocument";
             this.openDocument.Size = new System.Drawing.Size(174, 46);
             this.openDocument.TabIndex = 32;
@@ -358,7 +354,7 @@
             // clearSendBtn
             // 
             this.clearSendBtn.Font = new System.Drawing.Font("宋体", 9F);
-            this.clearSendBtn.Location = new System.Drawing.Point(228, 834);
+            this.clearSendBtn.Location = new System.Drawing.Point(236, 830);
             this.clearSendBtn.Name = "clearSendBtn";
             this.clearSendBtn.Size = new System.Drawing.Size(174, 43);
             this.clearSendBtn.TabIndex = 31;
@@ -431,9 +427,9 @@
             this.toolStripStatusLabel1,
             this.toolStripStatusLabel2,
             this.toolStripStatusLabel3,
-            this.toolStripStatusLabel4,
+            this.sendCountLabel,
             this.toolStripStatusLabel5,
-            this.toolStripStatusLabel6,
+            this.receiveCountLabel,
             this.toolStripStatusLabel7});
             this.statusStrip1.Location = new System.Drawing.Point(0, 1157);
             this.statusStrip1.Name = "statusStrip1";
@@ -446,7 +442,6 @@
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(68, 31);
             this.toolStripStatusLabel1.Text = "状态:";
-            this.toolStripStatusLabel1.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
             // 
             // toolStripStatusLabel2
             // 
@@ -461,12 +456,12 @@
             this.toolStripStatusLabel3.Size = new System.Drawing.Size(134, 31);
             this.toolStripStatusLabel3.Text = "发送计数：";
             // 
-            // toolStripStatusLabel4
+            // sendCountLabel
             // 
-            this.toolStripStatusLabel4.AutoSize = false;
-            this.toolStripStatusLabel4.Name = "toolStripStatusLabel4";
-            this.toolStripStatusLabel4.Size = new System.Drawing.Size(100, 31);
-            this.toolStripStatusLabel4.Text = "0";
+            this.sendCountLabel.AutoSize = false;
+            this.sendCountLabel.Name = "sendCountLabel";
+            this.sendCountLabel.Size = new System.Drawing.Size(100, 31);
+            this.sendCountLabel.Text = "0";
             // 
             // toolStripStatusLabel5
             // 
@@ -474,12 +469,12 @@
             this.toolStripStatusLabel5.Size = new System.Drawing.Size(134, 31);
             this.toolStripStatusLabel5.Text = "接收计数：";
             // 
-            // toolStripStatusLabel6
+            // receiveCountLabel
             // 
-            this.toolStripStatusLabel6.AutoSize = false;
-            this.toolStripStatusLabel6.Name = "toolStripStatusLabel6";
-            this.toolStripStatusLabel6.Size = new System.Drawing.Size(100, 31);
-            this.toolStripStatusLabel6.Text = "0";
+            this.receiveCountLabel.AutoSize = false;
+            this.receiveCountLabel.Name = "receiveCountLabel";
+            this.receiveCountLabel.Size = new System.Drawing.Size(100, 31);
+            this.receiveCountLabel.Text = "0";
             // 
             // toolStripStatusLabel7
             // 
@@ -491,6 +486,10 @@
             // 
             this.serialPort1.PortName = "COM7";
             this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // Main
             // 
@@ -534,7 +533,6 @@
             this.Name = "Main";
             this.Text = "串口助手";
             this.Load += new System.EventHandler(this.Form1_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).EndInit();
             this.port.ResumeLayout(false);
             this.port.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -578,18 +576,18 @@
         private System.Windows.Forms.CheckBox HexSend;
         private System.Windows.Forms.CheckBox autoSend;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.BindingSource bindingSource1;
         private System.Windows.Forms.GroupBox port;
         private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel3;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel4;
+        private System.Windows.Forms.ToolStripStatusLabel sendCountLabel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel5;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel6;
+        private System.Windows.Forms.ToolStripStatusLabel receiveCountLabel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel7;
         private System.IO.Ports.SerialPort serialPort1;
+        private System.Windows.Forms.Timer timer1;
     }
 }
 

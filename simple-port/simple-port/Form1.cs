@@ -15,30 +15,15 @@ namespace simple_port
     public partial class Main : Form
     {
         private bool portOpen = false;
+        private bool receivePause = false;
+        private List<byte> receiveBuffer=new List<byte>();
+        private int receiveCount = 0;
         public Main()
         {
             InitializeComponent();
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void richTextBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
+       
         private void loadSerial()
         {
             
@@ -71,48 +56,7 @@ namespace simple_port
             loadSerial();
         }
 
-        private void send_btn_Click(object sender, EventArgs e)
-        {
-            if(this.sendRtb.Text != "")
-            {
-                this.receiveRtb.AppendText(this.sendRtb.Text);
-                this.sendRtb.Text = "";
-            }
-            else
-            {
-                MessageBox.Show("请输入数据");
-            }
-        }
 
-        private void send_rtb_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void openPort_Click(object sender, EventArgs e)
         {
@@ -199,8 +143,85 @@ namespace simple_port
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            string dataReceive = serialPort1.ReadExisting();
-            receiveRtb.AppendText(dataReceive);
+            if (receivePause || !serialPort1.IsOpen) return;
+            byte[] dataTemp = new byte[serialPort1.BytesToRead];
+            serialPort1.Read(dataTemp, 0, dataTemp.Length);
+            receiveBuffer.AddRange(dataTemp);
+
+            receiveCount += dataTemp.Length;
+            receiveCountLabel.Text=receiveCount.ToString();
+            this.Invoke(new EventHandler(delegate
+            {
+                string displayText;
+                if (HexReceive.Checked)
+                {
+                    displayText = BitConverter.ToString(dataTemp).Replace("-", " ");
+                }
+                else
+                {
+                    displayText=Encoding.GetEncoding("gb2312").GetString(dataTemp).Replace("\0","\\0");
+                }
+                receiveRtb.AppendText(displayText);
+            }
+            ));
+        }
+
+        private void pauseReceive_Click(object sender, EventArgs e)
+        {
+            if (portOpen == false) { MessageBox.Show("串口未打开");return; }
+            if (receivePause == false)
+            {
+                receivePause = true;
+                serialPort1.DiscardInBuffer();
+                pauseReceive.Text = "继续接收";
+            }
+            else
+            {
+                receivePause = false;
+                pauseReceive.Text = "暂停";
+            }
+        }
+
+
+
+        private void HexReceive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (receiveRtb.Text == "") return;
+            if (HexReceive.Checked)
+            {
+                receiveRtb.Text = BitConverter.ToString(receiveBuffer.ToArray()).Replace("-", " ");
+            }
+            else
+            {
+                receiveRtb.Text = Encoding.GetEncoding("gb2312").GetString(receiveBuffer.ToArray()).Replace("\0", "\\0");
+            }
+        }
+
+        private void clearReceive_Click(object sender, EventArgs e)
+        {
+            receiveRtb.Text = "";
+            receiveBuffer.Clear();
+            receiveCount = 0;
+            receiveCountLabel.Text = receiveCount.ToString();
+        }
+
+        private void autoClearReceive_CheckedChanged(object sender, EventArgs e)
+        {
+            if (autoClearReceive.Checked)
+            { 
+                timer1.Start();
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if(receiveCount >= 4096) 
+            {
+                receiveRtb.Text = "";
+                receiveBuffer.Clear();
+                receiveCount = 0;
+                receiveCountLabel.Text = receiveCount.ToString();
+            }
         }
     }
 }
