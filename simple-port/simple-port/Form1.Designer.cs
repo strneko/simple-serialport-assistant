@@ -30,22 +30,22 @@
         {
             this.components = new System.ComponentModel.Container();
             this.portSelect = new System.Windows.Forms.ComboBox();
-            this.receive_rtb = new System.Windows.Forms.RichTextBox();
+            this.receiveRtb = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.send_rtb = new System.Windows.Forms.RichTextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.sendRtb = new System.Windows.Forms.RichTextBox();
+            this.BaudSelect = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.paritySelect = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.dataSelect = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.stopSelect = new System.Windows.Forms.ComboBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.openPort = new System.Windows.Forms.Button();
+            this.openPortBtn = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.autoClearReceive = new System.Windows.Forms.CheckBox();
             this.HexReceive = new System.Windows.Forms.CheckBox();
@@ -56,8 +56,8 @@
             this.label10 = new System.Windows.Forms.Label();
             this.sendDocument = new System.Windows.Forms.Button();
             this.openDocument = new System.Windows.Forms.Button();
-            this.clearSend = new System.Windows.Forms.Button();
-            this.send = new System.Windows.Forms.Button();
+            this.clearSendBtn = new System.Windows.Forms.Button();
+            this.sendBtn = new System.Windows.Forms.Button();
             this.HexSend = new System.Windows.Forms.CheckBox();
             this.autoSend = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -82,24 +82,20 @@
             // 
             this.portSelect.BackColor = System.Drawing.SystemColors.Info;
             this.portSelect.FormattingEnabled = true;
-            this.portSelect.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3"});
             this.portSelect.Location = new System.Drawing.Point(115, 45);
             this.portSelect.Name = "portSelect";
             this.portSelect.Size = new System.Drawing.Size(274, 32);
             this.portSelect.TabIndex = 0;
             this.portSelect.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // receive_rtb
+            // receiveRtb
             // 
-            this.receive_rtb.Location = new System.Drawing.Point(547, 45);
-            this.receive_rtb.Name = "receive_rtb";
-            this.receive_rtb.Size = new System.Drawing.Size(720, 637);
-            this.receive_rtb.TabIndex = 2;
-            this.receive_rtb.Text = "";
-            this.receive_rtb.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.receiveRtb.Location = new System.Drawing.Point(547, 45);
+            this.receiveRtb.Name = "receiveRtb";
+            this.receiveRtb.Size = new System.Drawing.Size(720, 637);
+            this.receiveRtb.TabIndex = 2;
+            this.receiveRtb.Text = "";
+            this.receiveRtb.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // label1
             // 
@@ -121,28 +117,28 @@
             this.label2.Text = "接收";
             this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
-            // send_rtb
+            // sendRtb
             // 
-            this.send_rtb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.send_rtb.Location = new System.Drawing.Point(547, 769);
-            this.send_rtb.Name = "send_rtb";
-            this.send_rtb.Size = new System.Drawing.Size(720, 342);
-            this.send_rtb.TabIndex = 6;
-            this.send_rtb.Text = "";
-            this.send_rtb.TextChanged += new System.EventHandler(this.send_rtb_TextChanged);
+            this.sendRtb.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.sendRtb.Location = new System.Drawing.Point(547, 769);
+            this.sendRtb.Name = "sendRtb";
+            this.sendRtb.Size = new System.Drawing.Size(720, 342);
+            this.sendRtb.TabIndex = 6;
+            this.sendRtb.Text = "";
+            this.sendRtb.TextChanged += new System.EventHandler(this.send_rtb_TextChanged);
             // 
-            // comboBox1
+            // BaudSelect
             // 
-            this.comboBox1.BackColor = System.Drawing.SystemColors.Info;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3"});
-            this.comboBox1.Location = new System.Drawing.Point(115, 101);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(274, 32);
-            this.comboBox1.TabIndex = 7;
+            this.BaudSelect.BackColor = System.Drawing.SystemColors.Info;
+            this.BaudSelect.FormattingEnabled = true;
+            this.BaudSelect.Items.AddRange(new object[] {
+            "4800",
+            "9600",
+            "115200"});
+            this.BaudSelect.Location = new System.Drawing.Point(115, 101);
+            this.BaudSelect.Name = "BaudSelect";
+            this.BaudSelect.Size = new System.Drawing.Size(274, 32);
+            this.BaudSelect.TabIndex = 7;
             // 
             // label3
             // 
@@ -172,18 +168,18 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "校验位";
             // 
-            // comboBox2
+            // paritySelect
             // 
-            this.comboBox2.BackColor = System.Drawing.SystemColors.Info;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3"});
-            this.comboBox2.Location = new System.Drawing.Point(115, 156);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(274, 32);
-            this.comboBox2.TabIndex = 11;
+            this.paritySelect.BackColor = System.Drawing.SystemColors.Info;
+            this.paritySelect.FormattingEnabled = true;
+            this.paritySelect.Items.AddRange(new object[] {
+            "NONE",
+            "ODD",
+            "EVEN"});
+            this.paritySelect.Location = new System.Drawing.Point(115, 156);
+            this.paritySelect.Name = "paritySelect";
+            this.paritySelect.Size = new System.Drawing.Size(274, 32);
+            this.paritySelect.TabIndex = 11;
             // 
             // label7
             // 
@@ -194,18 +190,19 @@
             this.label7.TabIndex = 14;
             this.label7.Text = "数据位";
             // 
-            // comboBox3
+            // dataSelect
             // 
-            this.comboBox3.BackColor = System.Drawing.SystemColors.Info;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3"});
-            this.comboBox3.Location = new System.Drawing.Point(115, 215);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(274, 32);
-            this.comboBox3.TabIndex = 13;
+            this.dataSelect.BackColor = System.Drawing.SystemColors.Info;
+            this.dataSelect.FormattingEnabled = true;
+            this.dataSelect.Items.AddRange(new object[] {
+            "5",
+            "6",
+            "7",
+            "8"});
+            this.dataSelect.Location = new System.Drawing.Point(115, 215);
+            this.dataSelect.Name = "dataSelect";
+            this.dataSelect.Size = new System.Drawing.Size(274, 32);
+            this.dataSelect.TabIndex = 13;
             // 
             // label8
             // 
@@ -216,18 +213,18 @@
             this.label8.TabIndex = 16;
             this.label8.Text = "停止位";
             // 
-            // comboBox4
+            // stopSelect
             // 
-            this.comboBox4.BackColor = System.Drawing.SystemColors.Info;
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Items.AddRange(new object[] {
-            "COM1",
-            "COM2",
-            "COM3"});
-            this.comboBox4.Location = new System.Drawing.Point(115, 271);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(274, 32);
-            this.comboBox4.TabIndex = 15;
+            this.stopSelect.BackColor = System.Drawing.SystemColors.Info;
+            this.stopSelect.FormattingEnabled = true;
+            this.stopSelect.Items.AddRange(new object[] {
+            "1",
+            "1.5",
+            "2"});
+            this.stopSelect.Location = new System.Drawing.Point(115, 271);
+            this.stopSelect.Name = "stopSelect";
+            this.stopSelect.Size = new System.Drawing.Size(274, 32);
+            this.stopSelect.TabIndex = 15;
             // 
             // checkBox1
             // 
@@ -249,15 +246,15 @@
             this.checkBox2.Text = "DTR";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
-            // openPort
+            // openPortBtn
             // 
-            this.openPort.Location = new System.Drawing.Point(209, 333);
-            this.openPort.Name = "openPort";
-            this.openPort.Size = new System.Drawing.Size(180, 85);
-            this.openPort.TabIndex = 19;
-            this.openPort.Text = "打开串口";
-            this.openPort.UseVisualStyleBackColor = true;
-            this.openPort.Click += new System.EventHandler(this.openPort_Click);
+            this.openPortBtn.Location = new System.Drawing.Point(209, 333);
+            this.openPortBtn.Name = "openPortBtn";
+            this.openPortBtn.Size = new System.Drawing.Size(180, 85);
+            this.openPortBtn.TabIndex = 19;
+            this.openPortBtn.Text = "打开串口";
+            this.openPortBtn.UseVisualStyleBackColor = true;
+            this.openPortBtn.Click += new System.EventHandler(this.openPort_Click);
             // 
             // label9
             // 
@@ -358,25 +355,27 @@
             this.openDocument.Text = "打开文件";
             this.openDocument.UseVisualStyleBackColor = true;
             // 
-            // clearSend
+            // clearSendBtn
             // 
-            this.clearSend.Font = new System.Drawing.Font("宋体", 9F);
-            this.clearSend.Location = new System.Drawing.Point(236, 834);
-            this.clearSend.Name = "clearSend";
-            this.clearSend.Size = new System.Drawing.Size(174, 43);
-            this.clearSend.TabIndex = 31;
-            this.clearSend.Text = "清空发送";
-            this.clearSend.UseVisualStyleBackColor = true;
+            this.clearSendBtn.Font = new System.Drawing.Font("宋体", 9F);
+            this.clearSendBtn.Location = new System.Drawing.Point(228, 834);
+            this.clearSendBtn.Name = "clearSendBtn";
+            this.clearSendBtn.Size = new System.Drawing.Size(174, 43);
+            this.clearSendBtn.TabIndex = 31;
+            this.clearSendBtn.Text = "清空发送";
+            this.clearSendBtn.UseVisualStyleBackColor = true;
+            this.clearSendBtn.Click += new System.EventHandler(this.clearSendBtn_Click);
             // 
-            // send
+            // sendBtn
             // 
-            this.send.Font = new System.Drawing.Font("宋体", 9F);
-            this.send.Location = new System.Drawing.Point(236, 773);
-            this.send.Name = "send";
-            this.send.Size = new System.Drawing.Size(174, 44);
-            this.send.TabIndex = 30;
-            this.send.Text = "手动发送";
-            this.send.UseVisualStyleBackColor = true;
+            this.sendBtn.Font = new System.Drawing.Font("宋体", 9F);
+            this.sendBtn.Location = new System.Drawing.Point(236, 773);
+            this.sendBtn.Name = "sendBtn";
+            this.sendBtn.Size = new System.Drawing.Size(174, 44);
+            this.sendBtn.TabIndex = 30;
+            this.sendBtn.Text = "手动发送";
+            this.sendBtn.UseVisualStyleBackColor = true;
+            this.sendBtn.Click += new System.EventHandler(this.sendBtn_Click);
             // 
             // HexSend
             // 
@@ -491,6 +490,7 @@
             // serialPort1
             // 
             this.serialPort1.PortName = "COM7";
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
             // 
             // Main
             // 
@@ -502,8 +502,8 @@
             this.Controls.Add(this.label11);
             this.Controls.Add(this.sendDocument);
             this.Controls.Add(this.openDocument);
-            this.Controls.Add(this.clearSend);
-            this.Controls.Add(this.send);
+            this.Controls.Add(this.clearSendBtn);
+            this.Controls.Add(this.sendBtn);
             this.Controls.Add(this.HexSend);
             this.Controls.Add(this.autoSend);
             this.Controls.Add(this.label10);
@@ -514,21 +514,21 @@
             this.Controls.Add(this.HexReceive);
             this.Controls.Add(this.autoClearReceive);
             this.Controls.Add(this.label9);
-            this.Controls.Add(this.openPort);
+            this.Controls.Add(this.openPortBtn);
             this.Controls.Add(this.checkBox2);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.label8);
-            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.stopSelect);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.comboBox3);
+            this.Controls.Add(this.dataSelect);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.comboBox2);
+            this.Controls.Add(this.paritySelect);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.send_rtb);
+            this.Controls.Add(this.BaudSelect);
+            this.Controls.Add(this.sendRtb);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.receive_rtb);
+            this.Controls.Add(this.receiveRtb);
             this.Controls.Add(this.portSelect);
             this.Controls.Add(this.port);
             this.Name = "Main";
@@ -547,22 +547,22 @@
         #endregion
 
         private System.Windows.Forms.ComboBox portSelect;
-        private System.Windows.Forms.RichTextBox receive_rtb;
+        private System.Windows.Forms.RichTextBox receiveRtb;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox send_rtb;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.RichTextBox sendRtb;
+        private System.Windows.Forms.ComboBox BaudSelect;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox paritySelect;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.ComboBox dataSelect;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox stopSelect;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.Button openPort;
+        private System.Windows.Forms.Button openPortBtn;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckBox autoClearReceive;
         private System.Windows.Forms.CheckBox HexReceive;
@@ -573,8 +573,8 @@
         private System.Windows.Forms.Label label10;
         private System.Windows.Forms.Button sendDocument;
         private System.Windows.Forms.Button openDocument;
-        private System.Windows.Forms.Button clearSend;
-        private System.Windows.Forms.Button send;
+        private System.Windows.Forms.Button clearSendBtn;
+        private System.Windows.Forms.Button sendBtn;
         private System.Windows.Forms.CheckBox HexSend;
         private System.Windows.Forms.CheckBox autoSend;
         private System.Windows.Forms.Label label11;
