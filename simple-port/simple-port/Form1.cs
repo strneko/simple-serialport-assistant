@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace simple_port
 {
@@ -17,7 +18,9 @@ namespace simple_port
         private bool portOpen = false;
         private bool receivePause = false;
         private List<byte> receiveBuffer=new List<byte>();
+        private List<byte> sendBuffer = new List<byte>();
         private int receiveCount = 0;
+        private int sendCount = 0;
         public Main()
         {
             InitializeComponent();
@@ -121,6 +124,14 @@ namespace simple_port
             }
         }
 
+        private void sendData()
+        {
+            Console.WriteLine(sendBuffer.ToString());
+            serialPort1.Write(sendBuffer.ToArray(), 0, sendBuffer.Count);
+            sendCount += sendBuffer.Count;
+            sendCountLabel.Text=sendCount.ToString();
+            
+        }
         private void sendBtn_Click(object sender, EventArgs e)
         {
             if(sendRtb.Text == "")
@@ -133,12 +144,19 @@ namespace simple_port
                 MessageBox.Show("串口未打开");
                 return;
             }
-            serialPort1.Write(sendRtb.Text);
+            
+            
+            
+
+            sendData();
         }
 
         private void clearSendBtn_Click(object sender, EventArgs e)
         {
+            sendBuffer.Clear();
             sendRtb.Text = "";
+            sendCount = 0;
+            sendCountLabel.Text = sendCount.ToString();
         }
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -159,7 +177,7 @@ namespace simple_port
                 }
                 else
                 {
-                    displayText=Encoding.GetEncoding("gb2312").GetString(dataTemp).Replace("\0","\\0");
+                    displayText=Encoding.GetEncoding("UTF-8").GetString(dataTemp).Replace("\0","\\0");
                 }
                 receiveRtb.AppendText(displayText);
             }
@@ -193,7 +211,7 @@ namespace simple_port
             }
             else
             {
-                receiveRtb.Text = Encoding.GetEncoding("gb2312").GetString(receiveBuffer.ToArray()).Replace("\0", "\\0");
+                receiveRtb.Text = Encoding.GetEncoding("UTF-8").GetString(receiveBuffer.ToArray()).Replace("\0", "\\0");
             }
         }
 
@@ -222,6 +240,71 @@ namespace simple_port
                 receiveCount = 0;
                 receiveCountLabel.Text = receiveCount.ToString();
             }
+        }
+
+        public static bool IsHexadecimal(string input)
+        {
+            if (string.IsNullOrEmpty(input))
+                return false;
+
+            // 检查是否有0x或0X前缀
+            int startIndex = 0;
+            if (input.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
+            {
+                startIndex = 2;
+            }
+
+            // 检查剩余字符是否都是16进制数字
+            for (int i = startIndex; i < input.Length; i++)
+            {
+                char c = input[i];
+                if (!((c >= '0' && c <= '9') ||
+                      (c >= 'A' && c <= 'F') ||
+                      (c >= 'a' && c <= 'f')))
+                {
+                    return false;
+                }
+            }
+
+            return input.Length > startIndex; // 确保至少有一个16进制数字
+        }
+
+        private void HexSend_CheckedChanged(object sender, EventArgs e)
+        {
+            if (sendRtb.Text == "") return;
+            if (HexSend.Checked)
+            {
+                sendRtb.Text = BitConverter.ToString(sendBuffer.ToArray()).Replace("-", " ");
+            }
+            else
+            {
+                sendRtb.Text = Encoding.GetEncoding("UTF-8").GetString(sendBuffer.ToArray()).Replace("\0", "\\0");
+            }
+        }
+
+        private void sendRtb_Leave(object sender, EventArgs e)
+        {
+            if (HexSend.Checked)
+            {
+                string val = sendRtb.Text.Replace(" ", "");
+                if (!IsHexadecimal(val))
+                {
+                    MessageBox.Show("请输入正确的十六进制数据！");
+                    sendRtb.Select();
+                    return;
+                }
+               
+                byte[] bytes = new byte[val.Length / 2];
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    bytes[i] = Convert.ToByte(val.Substring(i * 2, 2), 16);
+                }
+                sendBuffer.Clear();
+                sendBuffer.AddRange(bytes);
+                return;
+            }
+            sendBuffer.Clear();
+            sendBuffer.AddRange(Encoding.UTF8.GetBytes(sendRtb.Text));
         }
     }
 }

@@ -120,6 +120,7 @@
             this.sendRtb.Size = new System.Drawing.Size(720, 342);
             this.sendRtb.TabIndex = 6;
             this.sendRtb.Text = "";
+            this.sendRtb.Leave += new System.EventHandler(this.sendRtb_Leave);
             // 
             // BaudSelect
             // 
@@ -382,6 +383,7 @@
             this.HexSend.TabIndex = 29;
             this.HexSend.Text = "十六进制";
             this.HexSend.UseVisualStyleBackColor = true;
+            this.HexSend.CheckedChanged += new System.EventHandler(this.HexSend_CheckedChanged);
             // 
             // autoSend
             // 
