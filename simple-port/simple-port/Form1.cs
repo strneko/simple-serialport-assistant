@@ -21,6 +21,9 @@ namespace simple_port
         private List<byte> sendBuffer = new List<byte>();
         private int receiveCount = 0;
         private int sendCount = 0;
+        private Queue<byte> bufferQueue = null;
+        private bool headReceive = false;
+        private int frameLength = 0;
         public Main()
         {
             InitializeComponent();
@@ -57,6 +60,7 @@ namespace simple_port
         private void Form1_Load(object sender, EventArgs e)
         {
             loadSerial();
+            bufferQueue=new Queue<byte>();
         }
 
 
@@ -170,6 +174,62 @@ namespace simple_port
             receiveCountLabel.Text=receiveCount.ToString();
             this.Invoke(new EventHandler(delegate
             {
+                if (dataFrameCB.Checked)
+                {
+                    foreach(byte b in dataTemp)
+                    {
+                        bufferQueue.Enqueue(b);
+                    }
+                    if (headReceive == false)
+                    {
+                        while (bufferQueue.Count>0 && bufferQueue.Peek() != 0x7f) bufferQueue.Dequeue();
+                        if(bufferQueue.Count>0)headReceive = true;
+                        else
+                        {
+                            Console.WriteLine("head not found");
+                            return;
+                        }
+                    }
+                    if (headReceive)
+                    {
+                        if (bufferQueue.Count >= 2)
+                        {
+                            frameLength = bufferQueue.ElementAt(1);
+                            Console.WriteLine(DateTime.Now.ToString());
+                            Console.WriteLine($"show the data in bufferQueue: {bufferQueue.ToArray()}");
+                            Console.WriteLine($"frame length={bufferQueue.ElementAt(1)}");
+
+                            if (bufferQueue.Count < 1 + 1 + frameLength + 2)
+                            {
+                                Console.WriteLine("frame's length is not vaild.");
+                                return;
+                            }
+
+                            byte[] frameBuffer = new byte[frameLength+4];
+                            Array.Copy(bufferQueue.ToArray(), 0, frameBuffer, 0, frameBuffer.Length);
+                            if (crcCheck(frameBuffer) == false)
+                            {
+                                Console.WriteLine("bad frame, drop it.");
+
+                            }
+                            else
+                            {
+                                Console.WriteLine("good frame, pick it.");
+                                dataFrameRtb.Text = BitConverter.ToString(frameBuffer).Replace("-", " ");
+                                data1Input.Text = String.Format("{0:X2}", frameBuffer[2]);
+                                data2Input.Text = String.Format("{0:X2}", frameBuffer[3]);
+                                data3Input.Text = String.Format("{0:X2}", frameBuffer[4]);
+                                data4Input.Text = String.Format("{0:X2}", frameBuffer[5]);
+                            }
+                            for (int i = 0; i < 4 + frameLength; i++)
+                            {
+                                bufferQueue.Dequeue();
+                            }
+                            headReceive = false;
+                        }
+                    }
+                    return;
+                }
                 string displayText;
                 if (HexReceive.Checked)
                 {
@@ -184,6 +244,44 @@ namespace simple_port
             ));
         }
 
+        private bool crcCheck(byte[] frameBuffer)
+        {
+            bool ret = false;
+            byte[] temp=new byte[frameBuffer.Length-2];
+            Array.Copy(frameBuffer, 0, temp, 0, temp.Length);
+            byte[] crcData = CalculateCrc16(temp);
+            if (crcData[0] == frameBuffer[frameBuffer.Length-2]&& crcData[1] == frameBuffer[frameBuffer.Length - 1])
+            {
+                ret = true;
+            }
+            return ret;
+        }
+        public static byte[] CalculateCrc16(byte[] data)
+        {
+            ushort crc = 0xFFFF; // 初始值
+            ushort polynomial = 0x1021; // 多项式
+
+            for (int idx=2;idx<=5;idx++)
+            {
+                byte b = data[idx];
+                crc ^= (ushort)(b << 8); // 将当前数据字节与CRC高位异或
+
+                for (int i = 0; i < 8; i++)
+                {
+                    if ((crc & 0x8000) != 0) // 检查最高位
+                    {
+                        crc = (ushort)((crc << 1) ^ polynomial);
+                    }
+                    else
+                    {
+                        crc <<= 1;
+                    }
+                }
+            }
+
+            // 将ushort转换为byte[2]，大端序
+            return new byte[] { (byte)(crc >> 8), (byte)(crc & 0xFF) };
+        }
         private void pauseReceive_Click(object sender, EventArgs e)
         {
             if (portOpen == false) { MessageBox.Show("串口未打开");return; }

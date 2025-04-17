@@ -73,6 +73,18 @@
             this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.label4 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.data1Input = new System.Windows.Forms.TextBox();
+            this.data2Input = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.data3Input = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.data4Input = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.dataFrameRtb = new System.Windows.Forms.RichTextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.dataFrameCB = new System.Windows.Forms.CheckBox();
             this.port.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -433,9 +445,9 @@
             this.toolStripStatusLabel5,
             this.receiveCountLabel,
             this.toolStripStatusLabel7});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1157);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1152);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1279, 41);
+            this.statusStrip1.Size = new System.Drawing.Size(1662, 41);
             this.statusStrip1.TabIndex = 38;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -493,11 +505,123 @@
             // 
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1295, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(106, 24);
+            this.label4.TabIndex = 39;
+            this.label4.Text = "指令解析";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(1295, 77);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(70, 24);
+            this.label12.TabIndex = 40;
+            this.label12.Text = "数据1";
+            // 
+            // data1Input
+            // 
+            this.data1Input.Location = new System.Drawing.Point(1384, 74);
+            this.data1Input.Name = "data1Input";
+            this.data1Input.Size = new System.Drawing.Size(245, 35);
+            this.data1Input.TabIndex = 41;
+            // 
+            // data2Input
+            // 
+            this.data2Input.Location = new System.Drawing.Point(1384, 139);
+            this.data2Input.Name = "data2Input";
+            this.data2Input.Size = new System.Drawing.Size(245, 35);
+            this.data2Input.TabIndex = 43;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(1295, 142);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(70, 24);
+            this.label13.TabIndex = 42;
+            this.label13.Text = "数据2";
+            // 
+            // data3Input
+            // 
+            this.data3Input.Location = new System.Drawing.Point(1384, 207);
+            this.data3Input.Name = "data3Input";
+            this.data3Input.Size = new System.Drawing.Size(245, 35);
+            this.data3Input.TabIndex = 45;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(1295, 210);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(70, 24);
+            this.label14.TabIndex = 44;
+            this.label14.Text = "数据3";
+            // 
+            // data4Input
+            // 
+            this.data4Input.Location = new System.Drawing.Point(1384, 274);
+            this.data4Input.Name = "data4Input";
+            this.data4Input.Size = new System.Drawing.Size(245, 35);
+            this.data4Input.TabIndex = 47;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(1295, 277);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(70, 24);
+            this.label15.TabIndex = 46;
+            this.label15.Text = "数据4";
+            // 
+            // dataFrameRtb
+            // 
+            this.dataFrameRtb.Location = new System.Drawing.Point(1301, 369);
+            this.dataFrameRtb.Name = "dataFrameRtb";
+            this.dataFrameRtb.Size = new System.Drawing.Size(328, 105);
+            this.dataFrameRtb.TabIndex = 48;
+            this.dataFrameRtb.Text = "";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(1299, 342);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(82, 24);
+            this.label16.TabIndex = 49;
+            this.label16.Text = "数据帧";
+            // 
+            // dataFrameCB
+            // 
+            this.dataFrameCB.AutoSize = true;
+            this.dataFrameCB.Location = new System.Drawing.Point(1301, 490);
+            this.dataFrameCB.Name = "dataFrameCB";
+            this.dataFrameCB.Size = new System.Drawing.Size(210, 28);
+            this.dataFrameCB.TabIndex = 50;
+            this.dataFrameCB.Text = "启动数据帧接收";
+            this.dataFrameCB.UseVisualStyleBackColor = true;
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1279, 1198);
+            this.ClientSize = new System.Drawing.Size(1662, 1193);
+            this.Controls.Add(this.dataFrameCB);
+            this.Controls.Add(this.label16);
+            this.Controls.Add(this.dataFrameRtb);
+            this.Controls.Add(this.data4Input);
+            this.Controls.Add(this.label15);
+            this.Controls.Add(this.data3Input);
+            this.Controls.Add(this.label14);
+            this.Controls.Add(this.data2Input);
+            this.Controls.Add(this.label13);
+            this.Controls.Add(this.data1Input);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.comboBox5);
             this.Controls.Add(this.label11);
@@ -590,6 +714,18 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel7;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox data1Input;
+        private System.Windows.Forms.TextBox data2Input;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox data3Input;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox data4Input;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.RichTextBox dataFrameRtb;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.CheckBox dataFrameCB;
     }
 }
 
