@@ -62,7 +62,6 @@
             this.autoSend = new System.Windows.Forms.CheckBox();
             this.label11 = new System.Windows.Forms.Label();
             this.port = new System.Windows.Forms.GroupBox();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -70,7 +69,6 @@
             this.sendCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripStatusLabel5 = new System.Windows.Forms.ToolStripStatusLabel();
             this.receiveCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripStatusLabel();
             this.serialPort1 = new System.IO.Ports.SerialPort(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.label4 = new System.Windows.Forms.Label();
@@ -85,6 +83,9 @@
             this.dataFrameRtb = new System.Windows.Forms.RichTextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.dataFrameCB = new System.Windows.Forms.CheckBox();
+            this.timer2 = new System.Windows.Forms.Timer(this.components);
+            this.autoSendtb = new System.Windows.Forms.TextBox();
+            this.toolStripStatusLabel7 = new System.Windows.Forms.ToolStripSplitButton();
             this.port.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -241,6 +242,7 @@
             this.checkBox1.TabIndex = 17;
             this.checkBox1.Text = "RTS";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // checkBox2
             // 
@@ -251,6 +253,7 @@
             this.checkBox2.TabIndex = 18;
             this.checkBox2.Text = "DTR";
             this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
             // openPortBtn
             // 
@@ -324,6 +327,7 @@
             this.selectPath.TabIndex = 25;
             this.selectPath.Text = "选择路径";
             this.selectPath.UseVisualStyleBackColor = true;
+            this.selectPath.Click += new System.EventHandler(this.selectPath_Click);
             // 
             // saveData
             // 
@@ -334,6 +338,7 @@
             this.saveData.TabIndex = 26;
             this.saveData.Text = "保存数据";
             this.saveData.UseVisualStyleBackColor = true;
+            this.saveData.Click += new System.EventHandler(this.saveData_Click);
             // 
             // label10
             // 
@@ -353,6 +358,7 @@
             this.sendDocument.TabIndex = 33;
             this.sendDocument.Text = "发送文件";
             this.sendDocument.UseVisualStyleBackColor = true;
+            this.sendDocument.Click += new System.EventHandler(this.sendDocument_Click);
             // 
             // openDocument
             // 
@@ -363,6 +369,7 @@
             this.openDocument.TabIndex = 32;
             this.openDocument.Text = "打开文件";
             this.openDocument.UseVisualStyleBackColor = true;
+            this.openDocument.Click += new System.EventHandler(this.openDocument_Click);
             // 
             // clearSendBtn
             // 
@@ -406,6 +413,7 @@
             this.autoSend.TabIndex = 28;
             this.autoSend.Text = "自动发送";
             this.autoSend.UseVisualStyleBackColor = true;
+            this.autoSend.CheckedChanged += new System.EventHandler(this.autoSend_CheckedChanged);
             // 
             // label11
             // 
@@ -425,14 +433,6 @@
             this.port.TabIndex = 36;
             this.port.TabStop = false;
             this.port.Text = "串口配置";
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Location = new System.Drawing.Point(250, 1010);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(156, 32);
-            this.comboBox5.TabIndex = 37;
             // 
             // statusStrip1
             // 
@@ -489,12 +489,6 @@
             this.receiveCountLabel.Name = "receiveCountLabel";
             this.receiveCountLabel.Size = new System.Drawing.Size(100, 31);
             this.receiveCountLabel.Text = "0";
-            // 
-            // toolStripStatusLabel7
-            // 
-            this.toolStripStatusLabel7.Name = "toolStripStatusLabel7";
-            this.toolStripStatusLabel7.Size = new System.Drawing.Size(110, 31);
-            this.toolStripStatusLabel7.Text = "清空计数";
             // 
             // serialPort1
             // 
@@ -605,11 +599,32 @@
             this.dataFrameCB.Text = "启动数据帧接收";
             this.dataFrameCB.UseVisualStyleBackColor = true;
             // 
+            // timer2
+            // 
+            this.timer2.Tick += new System.EventHandler(this.timer2_Tick);
+            // 
+            // autoSendtb
+            // 
+            this.autoSendtb.Location = new System.Drawing.Point(250, 1010);
+            this.autoSendtb.Name = "autoSendtb";
+            this.autoSendtb.Size = new System.Drawing.Size(156, 35);
+            this.autoSendtb.TabIndex = 51;
+            this.autoSendtb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.autoSendtb_KeyPress);
+            this.autoSendtb.Leave += new System.EventHandler(this.autoSendtb_Leave);
+            // 
+            // toolStripStatusLabel7
+            // 
+            this.toolStripStatusLabel7.Name = "toolStripStatusLabel7";
+            this.toolStripStatusLabel7.Size = new System.Drawing.Size(137, 37);
+            this.toolStripStatusLabel7.Text = "清空计数";
+            this.toolStripStatusLabel7.Click += new System.EventHandler(this.toolStripStatusLabel7_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 24F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1662, 1193);
+            this.Controls.Add(this.autoSendtb);
             this.Controls.Add(this.dataFrameCB);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.dataFrameRtb);
@@ -623,7 +638,6 @@
             this.Controls.Add(this.label12);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.statusStrip1);
-            this.Controls.Add(this.comboBox5);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.sendDocument);
             this.Controls.Add(this.openDocument);
@@ -703,7 +717,6 @@
         private System.Windows.Forms.CheckBox autoSend;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.GroupBox port;
-        private System.Windows.Forms.ComboBox comboBox5;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel2;
@@ -711,7 +724,6 @@
         private System.Windows.Forms.ToolStripStatusLabel sendCountLabel;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel5;
         private System.Windows.Forms.ToolStripStatusLabel receiveCountLabel;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel7;
         private System.IO.Ports.SerialPort serialPort1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Label label4;
@@ -726,6 +738,9 @@
         private System.Windows.Forms.RichTextBox dataFrameRtb;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.CheckBox dataFrameCB;
+        private System.Windows.Forms.Timer timer2;
+        private System.Windows.Forms.TextBox autoSendtb;
+        private System.Windows.Forms.ToolStripSplitButton toolStripStatusLabel7;
     }
 }
 

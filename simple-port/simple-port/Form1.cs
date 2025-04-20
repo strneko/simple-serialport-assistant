@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
@@ -24,6 +26,10 @@ namespace simple_port
         private Queue<byte> bufferQueue = null;
         private bool headReceive = false;
         private int frameLength = 0;
+        private string receiveFilePath="";
+        private string sendFileName="";
+        private string sendText;
+
         public Main()
         {
             InitializeComponent();
@@ -118,6 +124,13 @@ namespace simple_port
                 {
                     serialPort1.Close();
                     portOpen = false;
+                    autoSend.Checked = false;
+                    if (timer2 != null)
+                    {
+                        timer2.Enabled = false;
+                        timer2.Stop();
+                        timer2 = null;
+                    }
                     openPortBtn.Text = "打开串口";
                 }
                 
@@ -403,6 +416,220 @@ namespace simple_port
             }
             sendBuffer.Clear();
             sendBuffer.AddRange(Encoding.UTF8.GetBytes(sendRtb.Text));
+        }
+
+        private void autoSend_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!autoSend.Checked){
+                autoSendtb.Enabled = true;
+                timer2.Enabled = false;
+                timer2.Stop();
+                return; 
+            
+            }
+            if(!serialPort1.IsOpen)
+            {
+                MessageBox.Show("串口未打开");
+                autoSend.Checked = false;
+                if (timer2 != null)
+                {
+                    timer2.Enabled = false;
+                    timer2.Stop();
+                }
+                return;
+            }
+            if (autoSendtb.Text == "")
+            {
+                MessageBox.Show("请输入发送周期");
+                return;
+            }
+            int t = Convert.ToInt32(autoSendtb.Text);
+            if (t < 100 || t > 60 * 1000)
+            {
+                MessageBox.Show("请输入100-60000之间的数字");
+                t = 1000;
+                return;
+            }
+            autoSendtb.Enabled = false;
+            sendBtn.Enabled = false;
+            timer2.Interval = t;
+            timer2.Start();
+
+        }
+
+   
+
+        private void autoSendtb_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '\b')
+            {
+                e.Handled = true; // 阻止输入
+            }
+        }
+
+        private void autoSendtb_Leave(object sender, EventArgs e)
+        {
+            if (autoSend.Checked)
+            {
+                if (autoSendtb.Text == "")
+                {
+                    MessageBox.Show("请输入发送周期");
+                    return;
+                }
+                int t = Convert.ToInt32(autoSendtb.Text);
+                if (t < 100 || t > 60 * 1000)
+                {
+                    MessageBox.Show("请输入100-60000之间的数字");
+                    t = 1000;
+                    return;
+                }
+                autoSendtb.Enabled = false;
+                sendBtn.Enabled = false;
+                timer2.Interval = t;
+                timer2.Start();
+            }
+            else
+            {
+                if (autoSendtb.Text == "")
+                {
+                    return;
+                }
+                int t = Convert.ToInt32(autoSendtb.Text);
+                if (t < 100 || t > 60 * 1000)
+                {
+                    MessageBox.Show("请输入100-60000之间的数字");
+                    t = 1000;
+                    return;
+                }
+            }
+        }
+
+        private void timer2_Tick(object sender, EventArgs e)
+        {
+            if (sendRtb.Text == "")
+            { 
+                autoSendtb.Enabled = true;
+                autoSend.Checked = false;
+                timer2.Enabled = false;
+                timer2.Stop();
+                MessageBox.Show("内容为空");
+                return;
+            }
+            
+            sendData();
+        }
+
+        private void toolStripStatusLabel7_Click(object sender, EventArgs e)
+        {
+            sendCountLabel.Text = "0";
+            receiveCountLabel.Text = "0";
+        }
+
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen && checkBox2.Checked)
+            {
+                MessageBox.Show("串口未打开");
+                checkBox2.Checked = false;
+                return;
+            }
+            if (checkBox2.Checked)
+            {
+                serialPort1.DtrEnable = true;
+            }
+            else
+            {
+                serialPort1.DtrEnable = false;
+            }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!serialPort1.IsOpen && checkBox1.Checked)
+            {
+                MessageBox.Show("串口未打开");
+                checkBox1.Checked = false;
+                return;
+            }
+            if (checkBox1.Checked)
+            {
+                serialPort1.RtsEnable = true;
+            }
+            else
+            {
+                serialPort1.RtsEnable = false;
+            }
+        }
+
+        private void selectPath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fb= new FolderBrowserDialog();
+            if (fb.ShowDialog() == DialogResult.OK)
+            {
+                receiveFilePath = fb.SelectedPath;
+            }
+        }
+
+        private void saveData_Click(object sender, EventArgs e)
+        {
+            if (receiveFilePath == "") return;
+            string fileName = receiveFilePath + "\\" + DateTime.Now.ToString("M") + ".txt";
+            StreamWriter sw=new StreamWriter(fileName);
+            sw.Write(receiveRtb.Text);
+            sw.Flush();sw.Close();
+            MessageBox.Show("保存成功");
+        }
+
+        private void openDocument_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog fb = new OpenFileDialog();
+            fb.Title = "请选择发送文件";
+            fb.Filter= "文本文件(*.txt)|*.txt";
+            fb.RestoreDirectory= true;
+            if (fb.ShowDialog() == DialogResult.OK)
+            {
+                sendFileName = fb.FileName;
+                StreamReader sr=new StreamReader(sendFileName,Encoding.UTF8);
+                sendText = sr.ReadToEnd();
+                sendRtb.Text = sendText;
+                sr.Close();
+            }
+        }
+
+        private void sendDocument_Click(object sender, EventArgs e)
+        {
+            if (sendFileName == "")
+            {
+                MessageBox.Show("请打开文件");
+                return;
+            }
+            if (serialPort1.IsOpen == false)
+            {
+                MessageBox.Show("串口未打开");
+                return;
+            }
+            try
+            {
+                byte[] data = Encoding.UTF8.GetBytes(sendText);
+                sendCount += data.Length;
+                sendCountLabel.Text = sendCount.ToString();
+                int pagenum = data.Length / 4096;
+                int addon = data.Length % 4096;
+                for(int i = 0; i < pagenum; i++)
+                {
+                    serialPort1.Write(data, (i * 4096), 4096);
+                    Thread.Sleep(10);
+                }
+                if (addon>0)
+                {
+                    serialPort1.Write(data, (pagenum * 4096), addon);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("发送失败:" + ex.Message.ToString(),"error");
+            }
         }
     }
 }
